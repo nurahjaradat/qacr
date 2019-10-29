@@ -1,0 +1,13 @@
+Package: qacr
+Title: Functions to Facilitate Data Science Projects
+Version: 0.0.0.9000
+Authors@R: 
+    person(given = "Robert",
+           family = "Kabacoff",
+           role = c("aut", "cre"),
+           email = "rkabacoff@wesleyan.edu")
+Description: This package provides functions for descriptive statistics,
+  data management, and data visualization.
+License: What license it uses
+Encoding: UTF-8
+LazyData: true
