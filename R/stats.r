@@ -1,6 +1,5 @@
 library(tidyverse)
 
-
 ## Statistics
 median <- function(xs){
   ys <- sort(xs)
