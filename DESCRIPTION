@@ -11,3 +11,7 @@ Description: This package provides functions for descriptive statistics,
 License: What license it uses
 Encoding: UTF-8
 LazyData: true
+Suggests: 
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr
