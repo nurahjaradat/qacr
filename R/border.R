@@ -6,13 +6,12 @@
 #'   \item{\code{Port Name}}{character Name of CBP Port of Entry}
 #'   \item{\code{State}}{character State}
 #'   \item{\code{Port Code}}{integer CBP Port Code}
-#'   \item{\code{Border}}{character US-Candada Border or
-#'   US-Mexico Border}
+#'   \item{\code{Border}}{character US-Candada Border or US-Mexico Border}
 #'   \item{\code{Date}}{character Year, Month}
 #'   \item{\code{Measure}}{character Conveyances, containers, passengers, pedestrians}
 #'   \item{\code{Value}}{integer Count}
 #'   \item{\code{Location}}{character Longitude and Latitude Location}
-#'}
+#' }
 #' @docType data
 #' @keywords datasets
 #' @name border

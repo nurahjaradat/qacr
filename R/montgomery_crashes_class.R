@@ -1,7 +1,7 @@
 #' @title Montgomery County, MD Car Crash Data
-#' @description This dataset provides general information about each collision and details of all traffic 
-#' collisions occurring on county and local roadways within Montgomery County between January 2014 and October 2018, 
-#' as collected via the Automated Crash Reporting System (ACRS) of the Maryland State Police, and reported by the Montgomery 
+#' @description This dataset provides general information about each collision and details of all traffic
+#' collisions occurring on county and local roadways within Montgomery County between January 2014 and October 2018,
+#' as collected via the Automated Crash Reporting System (ACRS) of the Maryland State Police, and reported by the Montgomery
 #' County Police, Gaithersburg Police, Rockville Police, or the Maryland-National Capital Park Police.
 #' @format A data frame with 44379 rows and 23 variables:
 #' \describe{
@@ -27,7 +27,7 @@
 #'   \item{\code{Road_Condition}}{The condition of the road when the collision occurred.}
 #'   \item{\code{Road_Division}}{The road division where the collision occurred.}
 #'   \item{\code{Latitude}}{Y coordinate of crash location.}
-#'   \item{\code{Longitude}}{X coordinate of crash location.} 
+#'   \item{\code{Longitude}}{X coordinate of crash location.}
 #'}
 #' @details DETAILS
-"crashes"<-crashes3
+NULL

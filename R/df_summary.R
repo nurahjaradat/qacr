@@ -3,18 +3,18 @@
 #' @param df a data frame
 #' @param digits – number of decimal digits for statistics, Default: 2
 #' @return the data data frame invisibly (so that it can be used in a pipeline)
-#' @details prints a comprehensive description of a data frame via several tables, 
-#' a general summary table and tables that provide a breakdown of quantitative and categorical variables 
-#' @examples 
+#' @details prints a comprehensive description of a data frame via several tables,
+#' a general summary table and tables that provide a breakdown of quantitative and categorical variables
+#' @examples
 #' data<-data.frame("height"=c(4,5,3,2, 100), 'weight'=c(39,88,NA,15, -2),"names"=c('Bill',"Dean", "Sam", NA, "Jane"), 'race'=c('b','w','w','o', 'b'))
 #' df_summary(mtcars)
 #' @rdname df_summary
-#' @export 
+#' @import dplyr
+#' @import readr
+#' @import e1071
+#' @export
 
 df_summary <- function(df, digits = 2){
-  require(dplyr)
-  require(readr)
-  require(e1071)
   if(!(is.data.frame(df))){
     stop("You need to input a data frame")
   }
@@ -29,7 +29,7 @@ df_summary <- function(df, digits = 2){
       tbl[i,3] <- class(df[,i])
     }
     for(i in 1:length(varnames)){
-      tbl[i,4] <- length(unique(df[,i])) 
+      tbl[i,4] <- length(unique(df[,i]))
     }
     for(i in 1:length(varnames)){
       tbl[i,5] <- sum(is.na(df[,i]))
@@ -38,7 +38,7 @@ df_summary <- function(df, digits = 2){
     for(i in 1:length(varnames)){
       tbl[i,6] <- paste0(round(sum(is.na(df[,i]))*100/n, digits=digits) , "%")
     }
-    cat("\nOverall\n", 
+    cat("\nOverall\n",
         "====================================================\n", sep="")
     print(as.table(tbl))
   }
@@ -58,11 +58,11 @@ df_summary <- function(df, digits = 2){
           table_n<-table1%>%
             select(numeric[i])%>%
             na.omit()%>%
-            summarise(name=numeric[i], n=n(), 
+            summarise(name=numeric[i], n=sum(!is.na((x))),
                       mean=round(mean(x), digits=digits),
                       sd=round(sd(x), digits=digits),
                       skew=round(skewness(x), digits=digits),
-                      p0=min(x), 
+                      p0=min(x),
                       p25=quantile(x, 0.25),
                       p50=median(x),
                       p75=quantile(x, 0.75),
@@ -82,13 +82,13 @@ df_summary <- function(df, digits = 2){
             group_by(.dots=categorical[i])%>%
             summarise(variable=categorical[i], n=n())%>%
             mutate(pct=round(n/sum(n), digits=digits))
-          
+
           colnames(table_c)<-c("level","variable",'n', 'pct')
           table_c<- table_c[c("variable", "level", "n", 'pct')]
-          
+
           if (nrow(table_c)>10){
             table_c$level<-as.character(table_c$level)
-            row_11<-c(variable=categorical[i], level="<...>", n=sum(table_c$n[11:nrow(table_c)]), 
+            row_11<-c(variable=categorical[i], level="<...>", n=sum(table_c$n[11:nrow(table_c)]),
                       pct=sum(table_c$pct[11:nrow(table_c)]))
             table_c = table_c[1:10,]
             table_c= rbind(table_c, row_11)
@@ -96,23 +96,23 @@ df_summary <- function(df, digits = 2){
           else{
             cdf<-rbind(cdf, table_c)
           }
-          
+
           cdf$variable[duplicated(cdf$variable)] <- " "
         }
       }
     }
     if (nrow(ndf)>0){
-      cat("\nQuatitative Variables\n", 
+      cat("\nQuatitative Variables\n",
           "====================================================\n", sep="")
       print (data.frame(ndf))
     }
     if (nrow(cdf)>0){
-      cat("\nCategorical Variables\n", 
+      cat("\nCategorical Variables\n",
           "====================================================\n", sep="")
       print (data.frame(cdf))
     }
   }
-  
+
   general_summary(df, digits)
   variable_summary(df, digits)
 }
