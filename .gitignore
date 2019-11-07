@@ -1,2 +1,4 @@
 .Rproj.user
 inst/doc
+
+# put DS_Store and .Rhistory here
