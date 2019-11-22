@@ -16,4 +16,4 @@
 #' @keywords datasets
 #' @name border
 #' @usage border
-NULL
+"border"

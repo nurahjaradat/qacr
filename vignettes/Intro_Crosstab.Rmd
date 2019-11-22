@@ -1,0 +1,71 @@
+---
+title: "Intro_Crosstab"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Intro_Crosstab}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## Jiner Zheng, Nurah Jaradat, Anna Sophie Peters 
+### 21 November 2019
+
+This function calculates and prints a two-way frequency table. Given a data 
+frame, a row factor, a column factor, and a type (frequencies, cell percents, 
+row percents, or column percents) the function returns a table with labeled rows
+and columns, frequencies or percents with the percentage sign depending on 
+type, a level labeled \<NA\> if na.rm = FALSE, and a level labeled \<Total\> if 
+total = TRUE.
+This function coerces x into a factor if it is not already a factor.
+
+```{r setup}
+library(qacr)
+# crosstab function
+crosstab <- function(data, rowvar, colvar, type="freq",
+                     total=TRUE, na.rm=FALSE,
+                     digits){
+  rowvar <- deparse(substitute(rowvar))
+  colvar <- deparse(substitute(colvar))
+  if (!is.factor(data[[rowvar]]))
+    data[rowvar] <- as.factor(data[[rowvar]])
+  if (!is.factor(data[[colvar]]))
+    data[colvar] <- as.factor(data[[colvar]])
+  tb <- table(data[[rowvar]], data[[colvar]])
+  names(dimnames(tb)) <- c(rowvar, colvar)
+  if (na.rm==TRUE)
+    tb <- table(data[[rowvar]], data[[colvar]], useNA = c("ifany"))
+  names(dimnames(tb)) <- c(rowvar, colvar)
+  if (type=="freq")
+    tb
+  if (type=="rowpercent")
+    tb <- round(prop.table(tb,1), digits+2)
+  if (type=="colpercent")
+    tb <- round(prop.table(tb,2), digits+2)
+  if (type=="cellpercent")
+    tb <- round(prop.table(tb),digits+2)
+  if (total==TRUE)
+    tb <- addmargins(tb, FUN=list("<Total>"=sum), quiet=TRUE)
+  result <- list(type=type, digits=digits, tb=tb)
+  class(result) <- c("crosstab","list")
+  return(result)
+}
+
+# print.crosstab function
+print.crosstab <- function(x, ...) {
+  if(!inherits(x, "crosstab")) stop("Must be a crosstab")
+  if(x$type != "freq")
+    x$tb <- replace(x$tb, TRUE, sprintf(paste0("%.",x$digits,"f%%"),x$tb*100))
+  print.table(x$tb)
+}
+
+# Examples of Implementation
+crosstab(mtcars, cyl, gear, type = "freq", digits = 2)
+crosstab(mtcars, cyl, gear, type = "rowpercent", digits = 3)
+```
